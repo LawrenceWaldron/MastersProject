@@ -2,7 +2,7 @@ from ase.io import read, write
 from quippy.potential import Potential
 
 configs = read('zrlj.traj@0:500')
-pot = Potential('IP GAP', param_filename='gp_new_hcp.xml')
+pot = Potential('IP GAP', param_filename='/home/lawrence/zr_hcp_test.xml')
 a = [zr2.set_calculator(pot) for zr2 in configs]
 energies = [zr2.get_potential_energy() for zr2 in configs]
 
