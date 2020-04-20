@@ -8,7 +8,7 @@ from ase.io import write
 
 # The potential file should be in the same folder you are running the script in
 
-pot = Potential('IP GAP', param_filename='gp_new_hcp.xml')
+pot = Potential('IP GAP', param_filename='zr_hcp_test.xml')
 
 
 
@@ -16,18 +16,16 @@ pot = Potential('IP GAP', param_filename='gp_new_hcp.xml')
 
 n = 5
 
-unit_cell=bulk('Zr', crystalstructure='hcp', a=3.223352707047396, c=5.172324479026618) * (n, n, n)
+vac=bulk('Zr', crystalstructure='hcp', a=3.23, c=5.16) * (n, n, n)
 
-del unit_cell[n**3]
+del vac[n**3]   #deletes centre atom
 
-unit_cell.set_calculator(pot)
+vac.set_calculator(pot)
 
 
 
-# Optimise the geometry of this cell – this won’t really do anything
+# Relax the structure and get total energy
 
-dyn = BFGS(unit_cell)
+dyn = BFGS(vac, trajectory='vac.traj')
 
 dyn.run(fmax=0.001)
-
-write('output.xyz', unit_cell)

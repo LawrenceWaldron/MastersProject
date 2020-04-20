@@ -8,21 +8,19 @@ from ase.io import write
 
 # The potential file should be in the same folder you are running the script in
 
-pot = Potential('IP GAP', param_filename='gp_new_hcp.xml')
+pot = Potential('IP GAP', param_filename='zr_hcp_test.xml')
 
 
 
 # Create a unit cell (from here it’s all ASE commands)
 
-unit_cell=bulk('Zr', crystalstructure='hcp', a=3.223352707047396, c=5.172324479026618) * (5, 5, 5)
+zr=bulk('Zr', crystalstructure='hcp', a=3.23, c=5.16) * (5, 5, 5)
 
-unit_cell.set_calculator(pot)
+zr.set_calculator(pot)
 
+dyn = BFGS(zr, trajectory='zr.traj')
 
-# Optimise the geometry of this cell – this won’t really do anything
+dyn.run(fmax=0.001)
 
-dyn = BFGS(unit_cell)
-
-dyn.run(fmax=0.05)
-
-write('output.xyz', unit_cell)
+print(zr.get_volume())
+write('output.xyz', zr)
